@@ -1,0 +1,7 @@
+{
+  "name": "next-movie-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
