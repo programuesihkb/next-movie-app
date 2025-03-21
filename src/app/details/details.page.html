@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Movie Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="movie">
+  <div class="backdrop" [style.background-image]="'url(https://image.tmdb.org/t/p/w1280' + movie.backdrop_path + ')'">
+    <div class="gradient-overlay"></div>
+  </div>
+  
+  <div class="content">
+    <div class="poster-container">
+      <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" [alt]="movie.title" class="poster">
+    </div>
+    
+    <div class="movie-header">
+      <h1>{{ movie.title }}</h1>
+      <p class="tagline">{{ movie.tagline }}</p>
+      
+      <div class="rating">
+        <ion-icon name="star"></ion-icon>
+        <span>{{ movie.vote_average | number:'1.1-1' }}/10</span>
+        <span class="votes">({{ movie.vote_count }} votes)</span>
+      </div>
+      
+      <div class="info-row">
+        <div class="info-item">
+          <ion-icon name="calendar"></ion-icon>
+          <span>{{ movie.release_date | date:'yyyy' }}</span>
+        </div>
+        <div class="info-item">
+          <ion-icon name="time"></ion-icon>
+          <span>{{ movie.runtime }} min</span>
+        </div>
+      </div>
+      
+      <div class="genres">
+        <ion-chip *ngFor="let genre of movie.genres">{{ genre.name }}</ion-chip>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>Overview</h2>
+      <p>{{ movie.overview }}</p>
+    </div>
+    
+    <div class="section details-grid">
+      <div class="detail-item" *ngIf="movie.budget">
+        <h3>Budget</h3>
+        <p>{{ movie.budget | currency:'USD':'symbol':'1.0-0' }}</p>
+      </div>
+      <div class="detail-item" *ngIf="movie.revenue">
+        <h3>Revenue</h3>
+        <p>{{ movie.revenue | currency:'USD':'symbol':'1.0-0' }}</p>
+      </div>
+      <div class="detail-item">
+        <h3>Status</h3>
+        <p>{{ movie.status }}</p>
+      </div>
+      <div class="detail-item">
+        <h3>Original Language</h3>
+        <p>{{ movie.original_language | uppercase }}</p>
+      </div>
+    </div>
+    
+    <div class="section" *ngIf="movie.production_companies?.length">
+      <h2>Production Companies</h2>
+      <div class="companies">
+        <div class="company" *ngFor="let company of movie.production_companies">
+          <img *ngIf="company.logo_path" [src]="'https://image.tmdb.org/t/p/w200' + company.logo_path" [alt]="company.name">
+          <p *ngIf="!company.logo_path || true" class="company-name">{{ company.name }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="!movie" class="loading">
+  <div class="loading-container">
+    <p>Loading movie details...</p>
+  </div>
+</ion-content>
