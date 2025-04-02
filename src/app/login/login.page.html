@@ -1,0 +1,52 @@
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="title-text">Next Movie App</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content [fullscreen]="true">
+  <ion-col size-md="6" offset-md="3" size-lg="4" offset-lg="4">
+    <div class="login-logo">
+      <img src="../../assets/img/nextMovieLogeDemo.jpg" alt="logo" />
+    </div>
+    
+    <ion-card>
+      <ion-card-header> 
+        <ion-card-title class="login-title">
+          {{ loginPage ? 'Login' : 'Register' }}
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item *ngIf="!loginPage">
+          <ion-label position="floating">Username</ion-label>
+          <ion-input type="text" [(ngModel)]="username" name="username"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="email" [(ngModel)]="email" name="email"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="password" [(ngModel)]="password" name="password"></ion-input>
+        </ion-item>
+        
+        <ion-button *ngIf="!loginPage" expand="block" [fill]="loginPage ? 'clear' : 'solid'" (click)="register()">
+          Register
+        </ion-button>
+
+        <ion-button expand="block" (click)="loginPage ? login() : (loginPage = true)"
+          [fill]="loginPage ? 'solid' : 'clear'"
+        >
+          {{ loginPage ? 'Login' : 'Back to Login' }}
+        </ion-button>
+        
+        <p class="not-reg-text" *ngIf="loginPage">
+          Not registered yet? 
+          <a (click)="loginPage = false"> Join now!</a>
+        </p>
+      </ion-card-content>
+    </ion-card>
+
+  </ion-col>
+</ion-content>
