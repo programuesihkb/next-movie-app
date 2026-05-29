@@ -1,0 +1,67 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>MovieApp</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- Personalized recommendations (only when logged in) -->
+  @if (auth.isLoggedIn() && recommendations().length > 0) {
+    <div class="section-header">
+      <ion-text><h3>For You</h3></ion-text>
+    </div>
+    <div class="recs-scroll">
+      @for (movie of recommendations(); track movie.id) {
+        <ion-card class="rec-card" button (click)="router.navigate(['/movie', movie.id])">
+          <img [src]="movie.posterUrl" [alt]="movie.title + ' poster'" class="rec-poster" />
+          <div class="rec-gradient"></div>
+          <div class="rec-footer">
+            <ion-card-title class="rec-title">{{ movie.title }}</ion-card-title>
+            <ion-badge color="warning">⭐ {{ movie.rating | number:'1.1-1' }}</ion-badge>
+          </div>
+        </ion-card>
+      }
+    </div>
+  } @else if (!auth.isLoggedIn()) {
+    <div class="login-banner">
+      <ion-text color="medium"><p>Login to get personalized picks</p></ion-text>
+      <ion-button size="small" fill="outline" (click)="router.navigate(['/login'])">Login</ion-button>
+    </div>
+  }
+
+  <!-- Segment: Popular / Top Rated -->
+  <ion-segment [value]="activeSegment()" (ionChange)="onSegmentChange($event)">
+    <ion-segment-button value="popular">
+      <ion-label>Popular</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="top-rated">
+      <ion-label>Top Rated</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Genre filter chips -->
+  @if (genres().length > 0) {
+    <div class="genre-scroll">
+      <ion-chip
+        [color]="activeGenreId() === null ? 'primary' : 'medium'"
+        (click)="clearGenre()"
+      >All</ion-chip>
+      @for (genre of genres(); track genre.id) {
+        <ion-chip
+          [color]="activeGenreId() === genre.id ? 'primary' : 'medium'"
+          (click)="selectGenre(genre.id)"
+        >{{ genre.name }}</ion-chip>
+      }
+    </div>
+  }
+
+  <!-- Movie grid -->
+  <app-movie-grid [movies]="movies()" [loading]="loading()" />
+
+  <!-- Infinite scroll -->
+  <ion-infinite-scroll threshold="200px" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" />
+  </ion-infinite-scroll>
+
+</ion-content>
