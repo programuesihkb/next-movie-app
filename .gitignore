@@ -1,0 +1,92 @@
+# ─────────────────────────────────────────
+# Dependencies
+# ─────────────────────────────────────────
+node_modules/
+**/node_modules/
+
+# ─────────────────────────────────────────
+# Environment / secrets  ← never commit
+# ─────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+# keep .env.example committed
+!**/.env.example
+
+# ─────────────────────────────────────────
+# Backend — NestJS compiled output
+# ─────────────────────────────────────────
+backend/dist/
+
+# ─────────────────────────────────────────
+# Frontend — Angular / Ionic build output
+# ─────────────────────────────────────────
+next-movie-app/dist/
+next-movie-app/www/
+next-movie-app/.angular/
+next-movie-app/out-tsc/
+next-movie-app/bazel-out/
+next-movie-app/.sourcemaps/
+next-movie-app/.versions/
+next-movie-app/coverage/
+next-movie-app/tmp/
+
+# Ionic / Capacitor
+next-movie-app/.ionic/
+next-movie-app/platforms/
+next-movie-app/plugins/
+
+# ─────────────────────────────────────────
+# Logs
+# ─────────────────────────────────────────
+*.log
+logs/
+log.txt
+npm-debug.log*
+yarn-error.log
+libpeerconnection.log
+testem.log
+
+# ─────────────────────────────────────────
+# Temp / cache
+# ─────────────────────────────────────────
+*.tmp
+*.tmp.*
+.tmp/
+.sass-cache/
+.nx/
+/coverage/
+/typings/
+/connect.lock/
+
+# ─────────────────────────────────────────
+# Editor swap / backup files
+# ─────────────────────────────────────────
+*~
+*.sw[mnpcod]
+.history/
+
+# ─────────────────────────────────────────
+# OS generated
+# ─────────────────────────────────────────
+.DS_Store
+Thumbs.db
+$RECYCLE.BIN/
+UserInterfaceState.xcuserstate
+
+# ─────────────────────────────────────────
+# IDEs
+# ─────────────────────────────────────────
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-project
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
