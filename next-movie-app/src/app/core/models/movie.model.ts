@@ -20,3 +20,14 @@ export interface Genre {
   id: number;
   name: string;
 }
+
+export interface MovieDetail extends Movie {
+  tagline: string;
+  runtime: number;
+  budget: number;
+  revenue: number;
+  status: string;
+  originalLanguage: string;
+  voteCount: number;
+  productionCompanies: { name: string; logoUrl: string }[];
+}

@@ -19,6 +19,17 @@ export interface Movie {
   genres?: string[];
 }
 
+export interface MovieDetail extends Movie {
+  tagline: string;
+  runtime: number;
+  budget: number;
+  revenue: number;
+  status: string;
+  originalLanguage: string;
+  voteCount: number;
+  productionCompanies: { name: string; logoUrl: string }[];
+}
+
 export interface MovieListResponse {
   results: Movie[];
   page: number;
@@ -68,14 +79,34 @@ export class MoviesService {
     }
   }
 
-  async getById(id: number): Promise<Movie> {
+  async getById(id: number): Promise<MovieDetail> {
     try {
       const url = this.buildUrl(`/movie/${id}`);
       const { data } = await firstValueFrom(this.http.get<Record<string, unknown>>(url));
-      return this.mapMovie(data);
+      return this.mapMovieDetail(data);
     } catch (err: unknown) {
       this.handleHttpError(err);
     }
+  }
+
+  private mapMovieDetail(raw: Record<string, unknown>): MovieDetail {
+    const base = this.mapMovie(raw);
+    const companies = (raw['production_companies'] as Array<Record<string, unknown>> | undefined) ?? [];
+    return {
+      ...base,
+      genres: ((raw['genres'] as Array<{ id: number; name: string }>) ?? []).map((g) => g.name),
+      tagline: (raw['tagline'] as string) ?? '',
+      runtime: (raw['runtime'] as number) ?? 0,
+      budget: (raw['budget'] as number) ?? 0,
+      revenue: (raw['revenue'] as number) ?? 0,
+      status: (raw['status'] as string) ?? '',
+      originalLanguage: (raw['original_language'] as string) ?? '',
+      voteCount: (raw['vote_count'] as number) ?? 0,
+      productionCompanies: companies.map((c) => ({
+        name: c['name'] as string,
+        logoUrl: c['logo_path'] ? `${IMAGE_BASE}/w200${c['logo_path']}` : '',
+      })),
+    };
   }
 
   async searchByTitle(query: string, page = 1): Promise<MovieListResponse> {
